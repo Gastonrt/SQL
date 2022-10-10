@@ -1,0 +1,79 @@
+DROP database if exists Tutorias_GRT;
+CREATE DATABASE IF NOT exists Tutorias_GRT;
+-- DB Privada de Alumnos/as que pasaron por
+-- mis tutorías en Coderhouse durante los
+-- años 2021 y 2022
+
+USE Tutorias_GRT ;
+
+-- Table: ALUMNOS
+DROP TABLE if exists alumnos;
+CREATE TABLE if not exists ALUMNOS (
+	idCurso INT NOT NULL,
+    idProfes int not null,
+    id_alumno int NOT NULL auto_increment,
+    nombre_alumno text (20) NOT NULL,
+    apellido_alumno text (20) NOT NULL,
+    instagram_alumno varchar (20) NULL,
+    linkedin_alumno varchar (20) NULL,
+    email varchar (30) NOT NULL,
+    curso text (50) NULL,
+    proyecto_final text (20),
+    CONSTRAINT PK_ALUMNOS PRIMARY KEY (id_alumno)
+);
+
+-- Table: TIPO_ALUMNO (CoderBeca o Pro)
+DROP TABLE if exists tipo_alumno;
+CREATE TABLE if not exists TIPO_ALUMNO (
+    id_tipo_alumno int NOT NULL,
+    descripcion varchar(20) NOT NULL,
+    id_alumno int NOT NULL,
+    CONSTRAINT PK_ALUMNO PRIMARY KEY (id_tipo_alumno)
+);
+
+-- Table: CURSO (Marketing Digital, Wordpress, E-Commerce)
+DROP TABLE if exists curso;
+CREATE TABLE if not exists CURSO (
+	id_curso int NOT NULL,
+    nombre_del_curso varchar (20) NOT NULL,
+    comision int (5) NOT NULL,
+    institucion text (10) NOT NULL,
+    fecha_inicio date NOT NULL,
+    fecha_fin date NOT NULL,
+    id_alumno int NOT NULL,
+    CONSTRAINT PK_CURSO PRIMARY KEY (id_curso)
+    );
+    
+  -- Table: RUBRO (Emprendimiento o Proyecto: Inmobiliaria, etc.)
+ DROP TABLE IF EXISTS rubro; 
+CREATE TABLE if not exists RUBRO (
+	id_rubro int NOT NULL,
+    nombre_rubro varchar (20) NOT NULL,
+    institucion text (10) NOT NULL,
+    comision int (5) NOT NULL,
+    CONSTRAINT PK_RUBRO PRIMARY KEY (id_rubro)
+    );  
+
+-- Table: PROFES (Distintos Profes con los que cursé)
+-- PROFES para relacionar con Alumnos según comisión asignada por Coderhouse
+drop table if exists profes;
+CREATE TABLE if not exists PROFES (
+	id_profes int NOT NULL,
+    nombre_profe text (20) NOT NULL,
+    apellido_profe text (20) NOT NULL,
+    email varchar (30) NOT NULL,
+    nombre_del_curso varchar (20) NOT NULL,
+    comision int (5) NOT NULL,
+    id_alumno int NOT NULL,
+    CONSTRAINT PK_PROFES PRIMARY KEY (id_profes)
+    );
+    
+    -- foreign keys
+-- Reference: FK_CURSO (table: ALUMNOS)
+ALTER TABLE ALUMNOS ADD CONSTRAINT FK_CURSO FOREIGN KEY FK_CURSO (idCurso) 
+    REFERENCES CURSO (id_CURSO);
+
+-- Reference: FK_PROFES (table: ALUMNOS)
+ALTER TABLE ALUMNOS ADD CONSTRAINT FK_PROFES FOREIGN KEY FK_PROFES (idProfes)
+    REFERENCES PROFES (id_profes);
+
